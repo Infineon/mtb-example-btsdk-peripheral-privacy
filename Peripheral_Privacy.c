@@ -42,6 +42,7 @@
 *******************************************************************************/
 
 #include "GeneratedSource/cycfg_gatt_db.h"
+#include "GeneratedSource/cycfg_pins.h"
 #include "app_bt_cfg.h"
 #include "sparcommon.h"
 #include "wiced_bt_dev.h"
@@ -60,15 +61,18 @@
 /* Enable debug print statements*/
 #define ENABLE_DEBUG
 /* Max number of bonded devices */
-#define BOND_MAX    ( 4 )
+#define BOND_MAX                       (4)
 
 /* LED Thread Priority */
-#define LED_THREAD_PRIORITY    (2)
+#define LED_THREAD_PRIORITY            (2)
 
 /* Delays for controlling LED Blink rate */
 #define DEVICE_CONNECTED_DELAY         (1000)
 #define DIRECTED_ADV_DELAY             (100)
 #define UNDIRECTED_ADV_DELAY           (500)
+
+#define LED_ON                          (0U)
+#define LED_OFF                         (1U)
 
 /* NVSRAM locations available for application data - NVSRAM Volatile Section Identifier */
 /* WICED_NVRAM_LOCAL_KEYS holds the local identity keys */
@@ -564,23 +568,23 @@ void app_led_control(uint32_t arg){
         {
             if(0 != connection_id)
             {
-                wiced_hal_gpio_set_pin_output(WICED_GPIO_PIN_LED_1,0);
+                wiced_hal_gpio_set_pin_output(LED1,LED_ON);
             }
             else
             {
-                wiced_hal_gpio_set_pin_output(WICED_GPIO_PIN_LED_1,1);
+                wiced_hal_gpio_set_pin_output(LED1,LED_OFF);
             }
             delay = DEVICE_CONNECTED_DELAY;
         }
         else if((BTM_BLE_ADVERT_DIRECTED_HIGH == *p_adv_mode) || (BTM_BLE_ADVERT_DIRECTED_LOW == *p_adv_mode)){
             delay = DIRECTED_ADV_DELAY;
-            led_status = wiced_hal_gpio_get_pin_output(WICED_GPIO_PIN_LED_1);
-            wiced_hal_gpio_set_pin_output(WICED_GPIO_PIN_LED_1,!led_status);
+            led_status = wiced_hal_gpio_get_pin_output(LED1);
+            wiced_hal_gpio_set_pin_output(LED1,!led_status);
         }
         else if((BTM_BLE_ADVERT_UNDIRECTED_HIGH == *p_adv_mode) || (BTM_BLE_ADVERT_UNDIRECTED_LOW == *p_adv_mode)){
             delay = UNDIRECTED_ADV_DELAY;
-            led_status = wiced_hal_gpio_get_pin_output(WICED_GPIO_PIN_LED_1);
-            wiced_hal_gpio_set_pin_output(WICED_GPIO_PIN_LED_1,!led_status);
+            led_status = wiced_hal_gpio_get_pin_output(LED1);
+            wiced_hal_gpio_set_pin_output(LED1,!led_status);
         }
 
         wiced_rtos_delay_milliseconds(delay, ALLOW_THREAD_TO_SLEEP);
@@ -682,8 +686,8 @@ wiced_bt_gatt_status_t app_gatt_callback( wiced_bt_gatt_evt_t event,
 void key_button_app_init(void)
 {
     /* Configure the Button GPIO as an input with a resistive pull up and falling edge interrupt */
-    wiced_hal_gpio_register_pin_for_interrupt( WICED_GPIO_PIN_BUTTON_1, button_cback, NULL );
-    wiced_hal_gpio_configure_pin( WICED_GPIO_PIN_BUTTON_1,
+    wiced_hal_gpio_register_pin_for_interrupt( SW3, button_cback, NULL );
+    wiced_hal_gpio_configure_pin( SW3,
                                 ( GPIO_INPUT_ENABLE | GPIO_PULL_UP | GPIO_EN_INT_FALLING_EDGE ),
                                 GPIO_PIN_OUTPUT_HIGH );
 

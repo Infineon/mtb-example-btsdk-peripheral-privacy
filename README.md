@@ -1,6 +1,6 @@
 # CE228751- Peripheral Privacy
 
-This code example demonstrates the privacy features available to users in Bluetooth 5.0 and above using ModusToolbox™ integrated development environment (IDE).
+This code example demonstrates the privacy features available to users in Bluetooth 5.0 and above using ModusToolbox™ software.
 
 Features Demonstrated:
 1. Privacy Modes as defined in Bluetooth Spec 5.0 and above.
@@ -8,7 +8,7 @@ Features Demonstrated:
 3. Management and handling of Bond data of multiple peer devices.
 
 ## Requirements
-- **Tool**: [ModusToolbox™ IDE](https://www.cypress.com/products/modustoolbox-software-environment) v2.x
+- **Tool**: [ModusToolbox™ software](https://www.cypress.com/products/modustoolbox-software-environment) v2.1
 - **Programming Language**: C
 - **Associated Parts**: [CYW20819](https://www.cypress.com/datasheet/CYW20819), [CYW20820](https://www.cypress.com/datasheet/CYW20820), [CYW20719](https://www.cypress.com/documentation/datasheets/cyw20719-enhanced-low-power-bredrble-bluetooth-50-soc)
 
@@ -26,52 +26,70 @@ Install a terminal emulator if you don't have one. Instructions in this document
 
 ## Using the Code Example
 
-### In ModusToolbox IDE:
-1. Install ModusToolbox 2.x
-2. In the ModusToolbox IDE, click the **New Application** link in the Quick Panel (or, use **File** > **New** > **ModusToolbox IDE Application**).
-3. Select your board and click **Next**.
-4. Select **wiced\_btsdk**. This project contains the SDK. It is used by all BTSDK applications. You will need to create this project just once in the working directory (i.e., Eclipse workspace). Ignore if you already created this project earlier.
+### In Eclipse IDE for ModusToolbox:
+1. In the Eclipse IDE for ModusToolbox, click the **New Application** link in the Quick Panel (or, use **File** > **New** > **ModusToolbox Application**).
+
+2. Pick a kit supported by the code example from the list shown in the **Project Creator - Choose Board Support Package (BSP)** dialog and click **Next**.
+
+3. In the **Project Creator - Select Application** dialog, select **wiced\_btsdk**. This project contains the SDK. It is used by all BTSDK applications. You will need to create this project just once in the working directory (i.e., Eclipse workspace). Ignore if you already created this project earlier.
 
    **Note**: Do not change the name of this project. All BTSDK apps use this project name in application makefiles.
 
-5. After the 'wiced\_btsdk' project is created, click the **New Application** link again, and select the board and click **Next**.
-6. Select the **BLE Pripheral Privacy** application and click **Next**. Click **Finish** to create the application.
-7. Select the application in the IDE. In the Quick Panel, click the **Build** link to build the application.
-8. To program the board (download the application), click the **Program** link in the Quick Panel.
+   Click **Create** to complete the application creation process.
+
+4. After the 'wiced\_btsdk' project is created, select the **BLE Peripheral Privacy** application from the list. Optionally, update the Application Name field with the application name and click **Create**.
+
+5. Click **Finish** to import the created applications to workspace.
+
+6. To program the board (download the application), Select the application project in the Project Explorer.
+
+7. In the **Quick Panel**, scroll down, and click **\<Application Name> Program**.
+
 
 ### In Command-Line Interface (CLI):
 
-1. Install ModusToolbox 2.x.
-2. In Windows, run Cygwin by clicking on Cygwin.bat from the folder *<install_folder>\ModusToolbox\tools_2.x\modus-shell*. The default install folder is the user's home directory. All the following steps should be run from inside the Cygwin window.
-3. Go to the directory that you want to use for your workspace. Use mkdir \<directory> to make new directory and cd \<directory> to change to a directory. 
-4. git clone `wiced_btsdk` repo first. As mentioned earlier, this project contains the SDK used by all apps. You will need to create this project just once in the working directory. For example:
+1. In Windows, run Cygwin by clicking on Cygwin.bat from the folder *<install_folder>\ModusToolbox\tools_2.x\modus-shell*. The default install folder is the user's home directory. All the following steps should be run from inside the Cygwin window. On Linux and macOS, you can use any terminal application.
+
+2. Go to the directory that you want to use for your workspace. Use mkdir \<directory> to make new directory and cd \<directory> to change to a directory.
+
+3. git clone `wiced_btsdk` repo first. As mentioned earlier, this project contains the SDK used by all apps. You will need to create this project just once in the working directory. For example:
    ```
    > git clone https://github.com/cypresssemiconductorco/wiced_btsdk
    ```
-5. git clone the app repo **mtb-example-btsdk-peripheral-privacy**. The application repo directory should be at the same folder level as 'wiced_btsdk'. For example:
+4. git clone the app repo **mtb-example-btsdk-peripheral-privacy**. The application repo directory should be at the same folder level as 'wiced_btsdk'. For example:
    ```
    > git clone https://github.com/cypresssemiconductorco/mtb-example-btsdk-peripheral-privacy
    ```
-6. The *wiced_btsdk* repo contains references to other repos. To download all the required collateral, `cd` to the SDK root folder and use `make getlibs`. For example: 
+5. The *wiced_btsdk* repo contains references to other repos. To download all the required collateral, `cd` to the SDK root folder and use `make getlibs`. For example:
    ```
    > cd wiced_btsdk
    > make getlibs
    ```
-7. To build the app, call `make build` from the application's top directory. For example, if you start from the wiced_btsdk directory you would use .
+6. To build the app, call `make build` from the application's top directory. For example, if you start from the wiced_btsdk directory you would use .
    ```
-   > cd ../mtb-example-peripheral-privacy
+   > cd ../mtb-example-btsdk-peripheral-privacy
    > make build
    ```
-8. To program (download to) the board, use the command :
+7. To program (download to) the board, use the command :
    ```
    > make qprogram
    ```
-9. To build and program (download to) the board in a single step:
+8. To build and program (download to) the board in a single step:
    ```
    > make program
    ```
 
    **Note**: `make program` = `make build` + `make qprogram`
+
+### In Third-party IDEs:
+
+1. Follow the instructions from the CLI section to download or clone the repository, and import the libraries using the `make getlibs` command.
+
+2. Export the application to a supported IDE using the `make <ide>` command.
+
+3. Follow the instructions displayed in the terminal to create or import the application as an IDE project.
+
+For more details, see the *Exporting to IDEs* section of the ModusToolbox User Guide: *{ModusToolbox install directory}/ide_{version}/docs/mtb_user_guide.pdf*.
 
 ## Operation
 
@@ -83,16 +101,16 @@ Install a terminal emulator if you don't have one. Instructions in this document
 
 4. The application runs a custom button service with one custom characteristic that counts the number of button presses on the kit. It can be read or setup for notifications. Each time the button on the kit is pressed the count value is incremented. If any device is connected and has notifications enabled the updated value is sent to it. If no device is connected or notifications are disabled a message informing the same is displayed.
 
->NOTE: The button count is incremented irrespective of whether any device is connected or not. 
+>NOTE: The button count is incremented on the button press irrespective of whether any device is connected or not.
 5. Following instructions appear on the terminal on application start :
     * Press **'l'** to check for the number of bonded devices and next empty slot
         - This Option allows you to see how many devices are paired to the peripheral and which is the next available slot. This example supports upto 4 bonded devices after which the oldest devices data is overwritten.
     * Press **'r'** to erase all the bond data present in NVRAM
-        - This option allows user to clear the memory of all the present bond data.           
+        - This option allows user to clear the memory of all the present bond data.
     * Press **'e'** to enter the bonding mode and add devices to bond list
         - This option puts the peripheral into bonding mode allowing it to connect and bond with new devices. After connection and bonding the incoming device can read and subscribe to the custom button count service.
     * Press **'p'** to change privacy mode of bonded device
-        - This is used to change the privacy mode setting of the bonded devices i.e to move devices from device privacy mode to netwok privacy mode and vice versa. For more information about the privacy modes read the design and implementation section.               
+        - This is used to change the privacy mode setting of the bonded devices i.e to move devices from device privacy mode to netwok privacy mode and vice versa. For more information about the privacy modes read the design and implementation section.
     * Press **'h'** any time in application to print the menu
         - At any point in the program to look at the options available user can request the start menu options.
 
@@ -111,11 +129,11 @@ Every Privacy-enabled BLE device has a unique address called the Identity Addres
 
 ##### Figure 1. BLE Address Types
 
-![AddressTypes](images/AddressTypes.jpg)
+![AddressTypes](images/address_types.jpg)
 
 Apart from this, Bluetooth 5.0 introduced more options in the form of **privacy modes**.
 
-There are two modes of privacy: **device privacy** mode and **network privacy** mode. 
+There are two modes of privacy: **device privacy** mode and **network privacy** mode.
 
 A device in *device privacy* mode is only concerned about the privacy of the device and will accept advertising/connection packets from peer devices that contain their identity address as well as ones that contain a private address, even if the peer device has distributed its Identity Resolution Key (IRK) in the past.
 
@@ -171,30 +189,28 @@ The LED 1 on the kit is used to represent the current advertising state of the d
 
 ##### Figure 2. Process Flowchart
 
-![Flowchart](images/ProcessFlowChartDirected.jpg)
-
-**Note**: Due to a bug, Directed Advertisement doesn't work after a power cycle. Use undirected advertisement. This is a known issue and will be fixed soon.
+![Flowchart](images/process_flow_chart_directed.jpg)
 
 ## Resources and Settings
 This section explains the ModusToolbox resources and their configuration as used in this code example. Note that all the configuration explained in this section has already been done in the code example.
 
-The ModusToolbox IDE stores the device configuration settings of the application in the *design.modus* file. This file is used by the device configurators, which generate the configuration firmware. It is present in the respective kit BSP folder in *wiced_btsdk* project. For example for CYW920819EVB-02 the path is *<workspace_path>/wiced_btsdk/dev-kit/bsp/TARGET_CYW920819EVB-02/COMPONENT_bsp_design_modus/design.modus*.
+The ModusToolbox stores the device configuration settings of the application in the *design.modus* file. This file is used by the device configurators, which generate the configuration firmware. It is present in the respective kit BSP folder in *wiced_btsdk* project. For example for CYW920819EVB-02 the path is *<workspace_path>/wiced_btsdk/dev-kit/bsp/TARGET_CYW920819EVB-02/COMPONENT_bsp_design_modus/design.modus*.
 
 Similarly bluetooth configuration settings are stored in *cycfg_bt.cybt*. It is a xml file which contains configuration such as Device name and information about GATT database. It is present in the application folder.
 
-* **Device Configurator** The Device Configurator is used to enable/configure the peripherals and the pins used in the application. See the 
-[Device Configurator Guide](https://www.cypress.com/ModusToolboxDeviceConfig). 
+* **Device Configurator** The Device Configurator is used to enable/configure the peripherals and the pins used in the application. See the
+[Device Configurator Guide](https://www.cypress.com/ModusToolboxDeviceConfig).
 
-* **Bluetooth Configurator:** The Bluetooth Configurator is used for generating/modifying the BLE GATT database. See the 
+* **Bluetooth Configurator:** The Bluetooth Configurator is used for generating/modifying the BLE GATT database. See the
 [Bluetooth Configurator Guide](https://www.cypress.com/ModusToolboxBLEConfig).
 
 ## Related Resources
 
 | **Application Notes**                                            |                                                              |
 | :----------------------------------------------------------- | :----------------------------------------------------------- |
-|[AN225684 – Getting Started with CYW208XX](http://www.cypress.com/an225684) | Describes CYW20819, CYW20820 Bluetooth SoC, software/hardware development ecosystem, and how to build your first BLE application using the device in ModusToolbox IDE.
+|[AN225684 – Getting Started with CYW208XX](http://www.cypress.com/an225684) | Describes CYW20819, CYW20820 Bluetooth SoC, software/hardware development ecosystem, and how to build your first BLE application using the device in ModusToolbox.
 | **Code Examples**  |
-|Visit the BTSDK code examples repository in Cypress GitHub portal for a comprehensive collection of code examples using ModusToolbox IDE|
+|Visit the BTSDK code examples repository in Cypress GitHub portal for a comprehensive collection of code examples using ModusToolbox|
 |**Device Documentation**|
 |[CYW20819 Device Datasheet](https://www.cypress.com/datasheet/CYW20819)|
 |[CYW20820 Device Datasheet](https://www.cypress.com/datasheet/CYW20820)|
@@ -204,20 +220,20 @@ Similarly bluetooth configuration settings are stored in *cycfg_bt.cybt*. It is 
 |[CYW920820EVB-02 Evaluation Kit](http://www.cypress.com/CYW920820EVB-02)|
 |[CYW920719B2Q40EVB-01 Evaluation kit](https://community.cypress.com/docs/DOC-17736)|
 |**Tool Documentation** |
-|[ModusToolbox IDE](http://www.cypress.com/modustoolbox)| The Cypress IDE for IoT designers|
+|[ModusToolbox](http://www.cypress.com/modustoolbox)| The Cypress development system for IoT designers|
 --------------------------------------------------------------------------------------------
 
 ## Document History
 
 Document Title: CE228751- Peripheral Privacy
 
-| Version | Description of Change |
-| ------- | --------------------- |
-| 1.0.0   | New code example      |
+| Version | Description of Change                        |
+| ------- | ---------------------------------------------|
+| 1.0.0   | New code example                             |
+| 1.1.0   | Updated to support ModusToolbox software v2.1|
+----------------------------------------------------------
 
-------
-
-![Banner](images/Banner.png)
+![Banner](images/cy_banner.png)
 
 -------------------------------------------------------------------------------
 
