@@ -1,4 +1,4 @@
-# CE228751- Peripheral Privacy
+# BTSDK- Peripheral Privacy
 
 This code example demonstrates the privacy features available to users in Bluetooth 5.0 and above using ModusToolbox™ software.
 
@@ -8,14 +8,25 @@ Features Demonstrated:
 3. Management and handling of Bond data of multiple peer devices.
 
 ## Requirements
-- **Tool**: [ModusToolbox™ software](https://www.cypress.com/products/modustoolbox-software-environment) v2.1
-- **Programming Language**: C
-- **Associated Parts**: [CYW20819](https://www.cypress.com/datasheet/CYW20819), [CYW20820](https://www.cypress.com/datasheet/CYW20820), [CYW20719](https://www.cypress.com/documentation/datasheets/cyw20719-enhanced-low-power-bredrble-bluetooth-50-soc)
+- [ModusToolbox® software](https://www.cypress.com/products/modustoolbox-software-environment) v2.2
 
-## Supported Kits
+   **Note:** This code example version requires ModusToolbox software version 2.2 or later and is not backward compatible with v2.1 or older versions. If you cannot move to ModusToolbox v2.2, use the latest compatible version of this example: [latest-v1.X](https://github.com/cypresssemiconductorco/mtb-example-btsdk-peripheral-privacy/tree/latest-v1.X).
+
+- Board Support Package (BSP) minimum required version: 2.8.0
+
+- Programming Language: C
+
+- Associated Parts: [CYW20819](https://www.cypress.com/datasheet/CYW20819), [CYW20820](https://www.cypress.com/datasheet/CYW20820), [CYW20719](https://www.cypress.com/documentation/datasheets/cyw20719-enhanced-low-power-bredrble-bluetooth-50-soc), [CYW20735](https://www.cypress.com/documentation/datasheets/cyw20735b1-single-chip-bluetooth-transceiver-wireless-input-devices)
+
+## Supported Toolchains (make variable 'TOOLCHAIN')
+
+- GNU Arm® Embedded Compiler v9.3.1 (GCC_ARM) - Default value of `TOOLCHAIN
+
+## Supported Kits (make variable 'TARGET')
 - [CYW920819EVB-02 Evaluation Kit](http://www.cypress.com/CYW920819EVB-02)
-- [CYW920820EVB-02 Evaluation kit](http://www.cypress.com/CYW920820EVB-02)
-- [CYW920719B2Q40EVB-01 Evaluation kit](https://community.cypress.com/docs/DOC-17736)
+- [CYW920820EVB-02 Evaluation Kit](http://www.cypress.com/CYW920820EVB-02)
+- [CYW920719B2Q40EVB-01 Evaluation Kit](https://community.cypress.com/docs/DOC-17736)
+- [CYW920735Q60EVB-01 Evaluation Kit](https://www.cypress.com/documentation/development-kitsboards/cyw920735q60evb-01-evaluation-kit)
 
 ## Hardware Setup
 This example uses the board's default configuration. Refer to the kit user guide to ensure that the board is configured correctly.
@@ -27,69 +38,58 @@ Install a terminal emulator if you don't have one. Instructions in this document
 ## Using the Code Example
 
 ### In Eclipse IDE for ModusToolbox:
-1. In the Eclipse IDE for ModusToolbox, click the **New Application** link in the Quick Panel (or, use **File** > **New** > **ModusToolbox Application**).
 
-2. Pick a kit supported by the code example from the list shown in the **Project Creator - Choose Board Support Package (BSP)** dialog and click **Next**.
+1. Click the **New Application** link in the **Quick Panel** (or, use **File** > **New** > **ModusToolbox Application**). This launches the [Project Creator](http://www.cypress.com/ModusToolboxProjectCreator) tool.
 
-3. In the **Project Creator - Select Application** dialog, select **wiced\_btsdk**. This project contains the SDK. It is used by all BTSDK applications. You will need to create this project just once in the working directory (i.e., Eclipse workspace). Ignore if you already created this project earlier.
+2. Pick a kit supported by the code example from the list shown in the **Project Creator - Choose Board Support Package (BSP)** dialog.
 
-   **Note**: Do not change the name of this project. All BTSDK apps use this project name in application makefiles.
+   When you select a supported kit, the example is reconfigured automatically to work with the kit. To work with a different supported kit later, use the [Library Manager](https://www.cypress.com/ModusToolboxLibraryManager) to choose the BSP for the supported kit and deselect the other BSPs. **Keep only the required BSP in your application** for more information refer [BTSDK Release Notes](https://community.cypress.com/community/software-forums/modustoolbox-bt-sdk). You can use the Library Manager to select or update the BSP and firmware libraries used in this application. To access the Library Manager, click the link from the Quick Panel.
 
-   Click **Create** to complete the application creation process.
+   You can also just start the application creation process again and select a different kit.
 
-4. After the 'wiced\_btsdk' project is created, select the **BLE Peripheral Privacy** application from the list. Optionally, update the Application Name field with the application name and click **Create**.
+   If you want to use the application for a kit not listed here, you may need to update the source files. If the kit does not have the required resources, the application may not work.
 
-5. Click **Finish** to import the created applications to workspace.
+3. In the **Project Creator - Select Application** dialog, choose the example by enabling the checkbox.
 
-6. To program the board (download the application), Select the application project in the Project Explorer.
+4. Optionally, change the suggested **New Application Name**.
 
-7. In the **Quick Panel**, scroll down, and click **\<Application Name> Program**.
+5. Enter the local path in the **Application(s) Root Path** field to indicate where the application needs to be created.
 
+   Applications that can share libraries can be placed in the same root path.
 
-### In Command-Line Interface (CLI):
+6. Click **Create** to complete the application creation process.
+For more details, see the [Eclipse IDE for ModusToolbox User Guide](https://www.cypress.com/MTBEclipseIDEUserGuide) (locally available at *{ModusToolbox install directory}/ide_{version}/docs/mt_ide_user_guide.pdf*).
 
-1. In Windows, run Cygwin by clicking on Cygwin.bat from the folder *<install_folder>\ModusToolbox\tools_2.x\modus-shell*. The default install folder is the user's home directory. All the following steps should be run from inside the Cygwin window. On Linux and macOS, you can use any terminal application.
+For more details, see the [Eclipse IDE for ModusToolbox User Guide](https://www.cypress.com/MTBEclipseIDEUserGuide) (locally available at *{ModusToolbox install directory}/ide_{version}/docs/mt_ide_user_guide.pdf*).
+### In Command-line Interface (CLI):
 
-2. Go to the directory that you want to use for your workspace. Use mkdir \<directory> to make new directory and cd \<directory> to change to a directory.
+ModusToolbox provides the Project Creator as both a GUI tool and a command line tool to easily create one or more ModusToolbox applications. See the "Project Creator Tools" section of the [ModusToolbox User Guide](https://www.cypress.com/ModusToolboxUserGuide) for more details.
 
-3. git clone `wiced_btsdk` repo first. As mentioned earlier, this project contains the SDK used by all apps. You will need to create this project just once in the working directory. For example:
-   ```
-   > git clone https://github.com/cypresssemiconductorco/wiced_btsdk
-   ```
-4. git clone the app repo **mtb-example-btsdk-peripheral-privacy**. The application repo directory should be at the same folder level as 'wiced_btsdk'. For example:
-   ```
-   > git clone https://github.com/cypresssemiconductorco/mtb-example-btsdk-peripheral-privacy
-   ```
-5. The *wiced_btsdk* repo contains references to other repos. To download all the required collateral, `cd` to the SDK root folder and use `make getlibs`. For example:
-   ```
-   > cd wiced_btsdk
-   > make getlibs
-   ```
-6. To build the app, call `make build` from the application's top directory. For example, if you start from the wiced_btsdk directory you would use .
-   ```
-   > cd ../mtb-example-btsdk-peripheral-privacy
-   > make build
-   ```
-7. To program (download to) the board, use the command :
-   ```
-   > make qprogram
-   ```
-8. To build and program (download to) the board in a single step:
-   ```
-   > make program
-   ```
+Alternatively, you can manually create the application using the following steps.
 
-   **Note**: `make program` = `make build` + `make qprogram`
+1. Download and unzip this repository onto your local machine, or clone the repository.
+
+2. Open a CLI terminal and navigate to the application folder.
+
+   On Linux and macOS, you can use any terminal application. On Windows, open the **modus-shell** app from the Start menu.
+
+   **Note:** The cloned application contains a default BSP file (*TARGET_xxx.mtb*) in the *deps* folder. Use the [Library Manager](https://www.cypress.com/ModusToolboxLibraryManager) (`make modlibs` command) to select and download a different BSP file, if required and deselect the other BSPs. **Keep only the required BSP in your application** for more information refer [BTSDK Release Notes](https://community.cypress.com/community/software-forums/modustoolbox-bt-sdk). If the selected kit does not have the required resources or is not [supported](#supported-kits-make-variable-target), the application may not work.
+
+3. Import the required libraries by executing the `make getlibs` command.
+
+Various CLI tools include a `-h` option that prints help information to the terminal screen about that tool. For more details, see the [ModusToolbox User Guide](https://www.cypress.com/ModusToolboxUserGuide) (locally available at *{ModusToolbox install directory}/docs_{version}/mtb_user_guide.pdf*).
 
 ### In Third-party IDEs:
 
-1. Follow the instructions from the CLI section to download or clone the repository, and import the libraries using the `make getlibs` command.
+1. Follow the instructions from the [CLI](#in-command-line-interface-cli) section to create the application, and import the libraries using the `make getlibs` command.
 
 2. Export the application to a supported IDE using the `make <ide>` command.
 
+    For a list of supported IDEs and more details, see the "Exporting to IDEs" section of the [ModusToolbox User Guide](https://www.cypress.com/ModusToolboxUserGuide) (locally available at *{ModusToolbox install directory}/docs_{version}/mtb_user_guide.pdf*.
+
 3. Follow the instructions displayed in the terminal to create or import the application as an IDE project.
 
-For more details, see the *Exporting to IDEs* section of the ModusToolbox User Guide: *{ModusToolbox install directory}/ide_{version}/docs/mtb_user_guide.pdf*.
+
 
 ## Operation
 
@@ -126,6 +126,11 @@ The use of resolvable private addresses allows only the devices that are paired 
 
 Every Privacy-enabled BLE device has a unique address called the Identity Address and an Identity Resolving Key (IRK). The Identity Address is the Public Address or Static Address of the BLE device. The IRK is used by the BLE device to generate its RPA and is used by peer devices to resolve the RPA of the BLE device. Both the Identity Address and the IRK are exchanged during the pairing process. Privacy-enabled BLE devices maintain a list that consists of the peer device’s Identity Address, the local IRK used by the BLE device to generate its RPA, and the peer device’s IRK used to resolve the peer device’s RPA. This is called the Resolving List. Only peer devices that have the 128-bit identity resolving key (IRK) of a BLE device can determine the device's address.
 
+Max Resolving list size supported on different devices is:
+- CYW20819    : 20 entries
+- CYW20820    : 20 entries
+- CYW20735B1  : 128 entries
+- CYW20719B2  : 128 entries
 
 ##### Figure 1. BLE Address Types
 
@@ -159,11 +164,11 @@ In *network privacy* mode, a device will only accept advertising/connection pack
 
 ##### Table 1. Logical Representation of Resolving List Entries
 
-| Device|Local IRK | Peer IRK  | Peer Identity Address  |Address Type  | Privacy Mode    |
+| Device|Local IRK | Peer IRK  | Peer Identity Address  |Identity Address Type  | Privacy Mode    |
 | ------|----------|-----------|------------------------|--------------|-----------------|
-| 1     |Local IRK | Peer IRK 1| Peer Identity Address 1|Address Type 1| Network/Device 1|
-| 2     |Local IRK | Peer IRK 2| Peer Identity Address 2|Address Type 2| Network/Device 2|
-| 3     |Local IRK | Peer IRK 3| Peer Identity Address 3|Address Type 3| Network/Device 3|
+| 1     |Local IRK | Peer 1 IRK| Peer 1 Identity Address|Static/Public| Network/Device|
+| 2     |Local IRK | Peer 2 IRK| Peer 2 Identity Address|Static/Public| Network/Device|
+| 3     |Local IRK | Peer 3 IRK| Peer 3 Identity Address|Static/Public| Network/Device|
 
 The application runs a custom button service with one custom characteristic that counts the number of button presses on the kit. It can be read or setup for notifications.The GATT DB is setup so that the characteristic can be read without pairing/bonding but for enabling and disabling notifications pairing/bonding is required. Each time the button on the kit is pressed the count value is incremented. If any device is connected and has notifications enabled the updated value is sent to it. If no device is connected or notifications are disabled a message informing the same is displayed.
 
@@ -194,7 +199,7 @@ The LED 1 on the kit is used to represent the current advertising state of the d
 ## Resources and Settings
 This section explains the ModusToolbox resources and their configuration as used in this code example. Note that all the configuration explained in this section has already been done in the code example.
 
-The ModusToolbox stores the device configuration settings of the application in the *design.modus* file. This file is used by the device configurators, which generate the configuration firmware. It is present in the respective kit BSP folder in *wiced_btsdk* project. For example for CYW920819EVB-02 the path is *<workspace_path>/wiced_btsdk/dev-kit/bsp/TARGET_CYW920819EVB-02/COMPONENT_bsp_design_modus/design.modus*.
+The ModusToolbox stores the device configuration settings of the application in the *design.modus* file. This file is used by the device configurators, which generate the configuration firmware. It is present in the respective kit BSP folder in *wiced_btsdk* project. For example for CYW920819EVB-02 the path is *<workspace_path>/mtb_shared/wiced_btsdk/dev-kit/bsp/TARGET_CYW920819EVB-02/COMPONENT_bsp_design_modus/design.modus*.
 
 Similarly bluetooth configuration settings are stored in *cycfg_bt.cybt*. It is a xml file which contains configuration such as Device name and information about GATT database. It is present in the application folder.
 
@@ -209,31 +214,35 @@ Similarly bluetooth configuration settings are stored in *cycfg_bt.cybt*. It is 
 | **Application Notes**                                            |                                                              |
 | :----------------------------------------------------------- | :----------------------------------------------------------- |
 |[AN225684 – Getting Started with CYW208XX](http://www.cypress.com/an225684) | Describes CYW20819, CYW20820 Bluetooth SoC, software/hardware development ecosystem, and how to build your first BLE application using the device in ModusToolbox.
-| **Code Examples**  |
-|Visit the BTSDK code examples repository in Cypress GitHub portal for a comprehensive collection of code examples using ModusToolbox|
+|**Code Examples**| Visit the [Cypress GitHub repo](https://www.cypress.com/mtb-github) for a comprehensive collection of ModusToolbox code examples|
 |**Device Documentation**|
 |[CYW20819 Device Datasheet](https://www.cypress.com/datasheet/CYW20819)|
 |[CYW20820 Device Datasheet](https://www.cypress.com/datasheet/CYW20820)|
 |[CYW20719 Device Datasheet](https://www.cypress.com/documentation/datasheets/cyw20719-enhanced-low-power-bredrble-bluetooth-50-soc)|
+|[CYW20735 Device Datasheet](https://www.cypress.com/documentation/datasheets/cyw20735b1-single-chip-bluetooth-transceiver-wireless-input-devices)|
 |**Development Kits** |
 |[CYW920819EVB-02 Evaluation Kit](http://www.cypress.com/CYW920819EVB-02)|
 |[CYW920820EVB-02 Evaluation Kit](http://www.cypress.com/CYW920820EVB-02)|
 |[CYW920719B2Q40EVB-01 Evaluation kit](https://community.cypress.com/docs/DOC-17736)|
+|[CYW920735Q60EVB-01 Evaluation Kit](https://www.cypress.com/documentation/development-kitsboards/cyw920735q60evb-01-evaluation-kit)|
 |**Tool Documentation** |
 |[ModusToolbox](http://www.cypress.com/modustoolbox)| The Cypress development system for IoT designers|
 --------------------------------------------------------------------------------------------
 
 ## Document History
 
-Document Title: CE228751- Peripheral Privacy
+Document Title: *CE228751 - Peripheral Privacy*
 
 | Version | Description of Change                        |
 | ------- | ---------------------------------------------|
 | 1.0.0   | New code example                             |
 | 1.1.0   | Updated to support ModusToolbox software v2.1|
+| 2.0.0   | Major update to support ModusToolbox software v2.2, added support for new kits<br> This version is not backward compatible with ModusToolbox software v2.1  |
+
+
 ----------------------------------------------------------
 
-![Banner](images/cy_banner.png)
+![Banner](images/ifx-cy-banner.png)
 
 -------------------------------------------------------------------------------
 

@@ -181,8 +181,9 @@ const wiced_bt_cfg_settings_t wiced_bt_cfg_settings =
     .rpa_refresh_timeout                = WICED_BT_CFG_DEFAULT_RANDOM_ADDRESS_CHANGE_TIMEOUT,             /**< Interval of  random address refreshing - secs */
     /* BLE white list size */
     .ble_white_list_size                = 0,                                                               /**< Maximum number of white list devices allowed. Cannot be more than 128 */
-
+#ifndef CYW20735B1
     .default_ble_power_level            = 12                                                             /**< Default LE power level, Refer lm_TxPwrTable table for the power range */
+#endif
 
 };
 
