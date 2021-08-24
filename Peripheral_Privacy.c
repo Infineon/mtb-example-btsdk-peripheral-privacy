@@ -9,23 +9,24 @@
 * Related Document: See README.md
 *
 *
-*******************************************************************************
-* (c) 2020, Cypress Semiconductor Corporation. All rights reserved.
-*******************************************************************************
-* This software, including source code, documentation and related materials
-* ("Software"), is owned by Cypress Semiconductor Corporation or one of its
-* subsidiaries ("Cypress") and is protected by and subject to worldwide patent
-* protection (United States and foreign), United States copyright laws and
-* international treaty provisions. Therefore, you may use this Software only
-* as provided in the license agreement accompanying the software package from
-* which you obtained this Software ("EULA").
+********************************************************************************
+* Copyright 2020-2021, Cypress Semiconductor Corporation (an Infineon company) or
+* an affiliate of Cypress Semiconductor Corporation.  All rights reserved.
 *
+* This software, including source code, documentation and related
+* materials ("Software") is owned by Cypress Semiconductor Corporation
+* or one of its affiliates ("Cypress") and is protected by and subject to
+* worldwide patent protection (United States and foreign),
+* United States copyright laws and international treaty provisions.
+* Therefore, you may use this Software only as provided in the license
+* agreement accompanying the software package from which you
+* obtained this Software ("EULA").
 * If no EULA applies, Cypress hereby grants you a personal, non-exclusive,
-* non-transferable license to copy, modify, and compile the Software source
-* code solely for use in connection with Cypress's integrated circuit products.
-* Any reproduction, modification, translation, compilation, or representation
-* of this Software except as specified above is prohibited without the express
-* written permission of Cypress.
+* non-transferable license to copy, modify, and compile the Software
+* source code solely for use in connection with Cypress's
+* integrated circuit products.  Any reproduction, modification, translation,
+* compilation, or representation of this Software except as specified
+* above is prohibited without the express written permission of Cypress.
 *
 * Disclaimer: THIS SOFTWARE IS PROVIDED AS-IS, WITH NO WARRANTY OF ANY KIND,
 * EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, NONINFRINGEMENT, IMPLIED
@@ -36,9 +37,9 @@
 * not authorize its products for use in any products where a malfunction or
 * failure of the Cypress product may reasonably be expected to result in
 * significant property damage, injury or death ("High Risk Product"). By
-* including Cypress's product in a High Risk Product, the manufacturer of such
-* system or application assumes all risk of such use and in doing so agrees to
-* indemnify Cypress against all liability.
+* including Cypress's product in a High Risk Product, the manufacturer
+* of such system or application assumes all risk of such use and in doing
+* so agrees to indemnify Cypress against all liability.
 *******************************************************************************/
 
 #include "GeneratedSource/cycfg_gatt_db.h"
@@ -54,10 +55,15 @@
 #include "wiced_hal_nvram.h"
 #include "brcm_fw_types.h"
 #include "wiced_rtos.h"
+#include "wiced_bt_ble.h"
+#include "wiced_bt_gatt.h"
+#include "wiced_bt_uuid.h"
+#include "wiced_memory.h"
+#include "wiced_bt_l2c.h"
 
-/*******************************************************************
- * Constant Definitions
- ******************************************************************/
+/*******************************************************************************
+ *                    Macros
+ ******************************************************************************/
 /* Enable debug print statements*/
 #define ENABLE_DEBUG
 /* Max number of bonded devices */
@@ -84,9 +90,9 @@
 #define WICED_NVRAM_LOCAL_KEYS         ( WICED_NVRAM_HOST_INFO0 + BOND_MAX )
 #define WICED_NVRAM_PAIRED_KEYS0       ( WICED_NVRAM_LOCAL_KEYS + 1 )
 
-/*******************************************************************
- * Variable Definitions
- ******************************************************************/
+/*******************************************************************************
+ *                   Variable Definitions
+ ******************************************************************************/
 uint16_t connection_id = 0;
 wiced_timer_t led_timer;
 wiced_bt_ble_advert_mode_t *p_adv_mode = NULL;
@@ -123,9 +129,10 @@ struct hostinfo_struct hostinfo;
 struct hostinfo_struct hostinfoTemp;
 
 
-/*******************************************************************
- * Function Prototypes
- ******************************************************************/
+/*******************************************************************************
+ *                  Function Prototypes
+ ******************************************************************************/
+ 
 static wiced_bt_dev_status_t    app_bt_management_callback              ( wiced_bt_management_evt_t event, wiced_bt_management_evt_data_t *p_event_data );
 static wiced_bt_gatt_status_t   app_connect_callback                    ( wiced_bt_gatt_connection_status_t *p_conn_status );
 static wiced_bt_gatt_status_t   app_gatt_callback                       ( wiced_bt_gatt_evt_t event, wiced_bt_gatt_event_data_t *p_data );
@@ -146,7 +153,7 @@ static void                     privacy_mode_handler                    (uint8_t
 
 /*******************************************************************************
  * Function Name: application_start()
- ********************************************************************************
+ *******************************************************************************
  * Summary: Entry point to the application. Initialize transport configuration
  *          and register BLE management event callback. The actual application
  *          initialization will happen when stack reports that BT device is ready
@@ -252,7 +259,7 @@ void app_init(void)
                 bytes = wiced_hal_read_nvram( WICED_NVRAM_PAIRED_KEYS0 + count, sizeof(wiced_bt_device_link_keys_t), p, &result);
                 WICED_BT_TRACE("link key read from NVRAM. Key Size %d:\r\n", bytes);
                 result = wiced_bt_dev_add_device_to_address_resolution_db ( &link_keys );
-                result = wiced_bt_ble_update_advertising_white_list(WICED_TRUE, link_keys.bd_addr);
+                result = wiced_bt_ble_update_advertising_filter_accept_list(WICED_TRUE, link_keys.bd_addr);
                 WICED_BT_TRACE("%d",result);
                 WICED_BT_TRACE("Host %d: [%B] added to the resolution database \r\n",count+1, link_keys.bd_addr);
                 wiced_hal_read_nvram(WICED_NVRAM_HOST_INFO0 + count, sizeof(hostinfo), (uint8_t *)&hostinfoTemp, &result);
@@ -305,9 +312,9 @@ void app_init(void)
         wiced_bt_start_advertisements(BTM_BLE_ADVERT_UNDIRECTED_HIGH, 0, NULL);
     }
 }
-/**************************************************************************************************
+/*******************************************************************************
  * Function Name: app_bt_management_callback()
- **************************************************************************************************
+ *******************************************************************************
  * Summary:
  *   This is a Bluetooth stack management event handler function to receive events from
  *   BLE stack and process as per the application.
@@ -319,7 +326,7 @@ void app_init(void)
  * Return:
  *  wiced_result_t: Error code from WICED_RESULT_LIST or BT_RESULT_LIST
  *
- ***********************************************************************************************/
+ ******************************************************************************/
 
 /* Bluetooth Management Event Handler */
 wiced_result_t app_bt_management_callback( wiced_bt_management_evt_t event, wiced_bt_management_evt_data_t *p_event_data )
@@ -541,9 +548,9 @@ wiced_result_t app_bt_management_callback( wiced_bt_management_evt_t event, wice
     return status;
 }
 
-/**************************************************************************************************
+/*******************************************************************************
  * Function Name: app_led_control()
- ***************************************************************************************************
+ *******************************************************************************
  * Summary:
  *Function to toggle led state depending on the state of advertisement.
  *   1. Advertisement ON (Undirected):   slow Blinking led(T = 1 sec)
@@ -556,7 +563,7 @@ wiced_result_t app_bt_management_callback( wiced_bt_management_evt_t event, wice
  *
  * Return:
  *    None.
- ***********************************************************************************************/
+ ******************************************************************************/
 
 void app_led_control(uint32_t arg){
 
@@ -593,7 +600,7 @@ void app_led_control(uint32_t arg){
 
 /*******************************************************************************
  * Function Name: app_set_advertisement_data()
- ********************************************************************************
+ *******************************************************************************
  * Summary: Sets up the advertisement data for advertisement packets.
  *
  * Parameters:
@@ -602,7 +609,7 @@ void app_led_control(uint32_t arg){
  * Return:
  *  None
  *
- ********************************************************************************/
+ ******************************************************************************/
 void app_set_advertisement_data(void)
 {
     wiced_bt_ble_advert_elem_t adv_elem[3] = { 0 };
@@ -634,7 +641,7 @@ void app_set_advertisement_data(void)
 
 /*******************************************************************************
  * Function Name: app_gatt_callback()
- ********************************************************************************
+ *******************************************************************************
  * Summary: Bluetooth Management Event callback function registered by
  *          application_start() This function acts like a Finite State
  *          Machine(FSM) for the application.
@@ -645,7 +652,7 @@ void app_set_advertisement_data(void)
  * Return:
  *  None
  *
- ********************************************************************************/
+ ******************************************************************************/
 wiced_bt_gatt_status_t app_gatt_callback( wiced_bt_gatt_evt_t event,
                                           wiced_bt_gatt_event_data_t *p_data )
 {
@@ -673,7 +680,7 @@ wiced_bt_gatt_status_t app_gatt_callback( wiced_bt_gatt_evt_t event,
 
 /*******************************************************************************
  * Function Name: key_button_app_init()
- ********************************************************************************
+ *******************************************************************************
  * Summary: This function configures the button for the interrupts.
  *
  * Parameters:
@@ -682,7 +689,7 @@ wiced_bt_gatt_status_t app_gatt_callback( wiced_bt_gatt_evt_t event,
  * Return:
  *  None
  *
- ********************************************************************************/
+ ******************************************************************************/
 void key_button_app_init(void)
 {
     /* Configure the Button GPIO as an input with a resistive pull up and falling edge interrupt */
@@ -705,7 +712,7 @@ void key_button_app_init(void)
  * Return:
  *  None
  *
- ********************************************************************************/
+ ******************************************************************************/
 void button_cback( void *data, uint8_t port_pin )
 {
     /* Increment the button value to register the button press */
@@ -807,9 +814,9 @@ wiced_bt_gatt_status_t app_connect_callback(
     return status;
 }
 
-/**************************************************************************************************
+/*******************************************************************************
 * Function Name: app_server_callback()
-***************************************************************************************************
+********************************************************************************
 * Summary:
 *   This function handles GATT server events from the BT stack.
 *
@@ -821,7 +828,7 @@ wiced_bt_gatt_status_t app_connect_callback(
 * Return:
 *  wiced_bt_gatt_status_t: See possible status codes in wiced_bt_gatt_status_e in wiced_bt_gatt.h
 *
-**************************************************************************************************/
+*******************************************************************************/
 wiced_bt_gatt_status_t app_server_callback( uint16_t conn_id, wiced_bt_gatt_request_type_t type, wiced_bt_gatt_request_data_t *p_data )
 {
     wiced_bt_gatt_status_t status = WICED_BT_GATT_ERROR;
@@ -839,9 +846,9 @@ wiced_bt_gatt_status_t app_server_callback( uint16_t conn_id, wiced_bt_gatt_requ
     return status;
 }
 
-/**************************************************************************************************
+/*******************************************************************************
 * Function Name: app_write_handler()
-***************************************************************************************************
+********************************************************************************
 * Summary:
 *   This function handles Write Requests received from the client device
 *
@@ -853,7 +860,7 @@ wiced_bt_gatt_status_t app_server_callback( uint16_t conn_id, wiced_bt_gatt_requ
 * Return:
 *  wiced_bt_gatt_status_t: See possible status codes in wiced_bt_gatt_status_e in wiced_bt_gatt.h
 *
-**************************************************************************************************/
+*******************************************************************************/
 wiced_bt_gatt_status_t app_write_handler( wiced_bt_gatt_write_t *p_write_req, uint16_t conn_id )
 {
     wiced_bt_gatt_status_t status = WICED_BT_GATT_INVALID_HANDLE;
@@ -864,9 +871,9 @@ wiced_bt_gatt_status_t app_write_handler( wiced_bt_gatt_write_t *p_write_req, ui
     return status;
 }
 
-/**************************************************************************************************
+/*******************************************************************************
 * Function Name: app_read_handler()
-***************************************************************************************************
+********************************************************************************
 * Summary:
 *   This function handles Read Requests received from the client device
 *
@@ -878,7 +885,7 @@ wiced_bt_gatt_status_t app_write_handler( wiced_bt_gatt_write_t *p_write_req, ui
 * Return:
 *  wiced_bt_gatt_status_t: See possible status codes in wiced_bt_gatt_status_e in wiced_bt_gatt.h
 *
-**************************************************************************************************/
+*******************************************************************************/
 wiced_bt_gatt_status_t app_read_handler( wiced_bt_gatt_read_t *p_read_req, uint16_t conn_id )
 {
     wiced_bt_gatt_status_t status = WICED_BT_GATT_INVALID_HANDLE;
@@ -889,9 +896,9 @@ wiced_bt_gatt_status_t app_read_handler( wiced_bt_gatt_read_t *p_read_req, uint1
     return status;
 }
 
-/**************************************************************************************************
+/*******************************************************************************
 * Function Name: app_get_value()
-***************************************************************************************************
+********************************************************************************
 * Summary:
 *   This function handles reading of the attribute value from the GATT database and passing the
 *   data to the BT stack. The value read from the GATT database is stored in a buffer whose
@@ -907,7 +914,7 @@ wiced_bt_gatt_status_t app_read_handler( wiced_bt_gatt_read_t *p_read_req, uint1
 * Return:
 *   wiced_bt_gatt_status_t: See possible status codes in wiced_bt_gatt_status_e in wiced_bt_gatt.h
 *
-**************************************************************************************************/
+*******************************************************************************/
 wiced_bt_gatt_status_t app_get_value( uint16_t attr_handle, uint16_t conn_id, uint8_t *p_val, uint16_t max_len, uint16_t *p_len )
 {
     int i = 0;
@@ -957,9 +964,9 @@ wiced_bt_gatt_status_t app_get_value( uint16_t attr_handle, uint16_t conn_id, ui
     return res;
 }
 
-/**************************************************************************************************
+/*******************************************************************************
 * Function Name: app_set_value()
-***************************************************************************************************
+********************************************************************************
 * Summary:
 *   This function handles writing to the attribute handle in the GATT database using the
 *   data passed from the BT stack. The value to write is stored in a buffer
@@ -974,7 +981,7 @@ wiced_bt_gatt_status_t app_get_value( uint16_t attr_handle, uint16_t conn_id, ui
 * Return:
 *   wiced_bt_gatt_status_t: See possible status codes in wiced_bt_gatt_status_e in wiced_bt_gatt.h
 *
-**************************************************************************************************/
+*******************************************************************************/
 wiced_bt_gatt_status_t app_set_value( uint16_t attr_handle, uint16_t conn_id, uint8_t *p_val, uint16_t len )
 {
     int i = 0;

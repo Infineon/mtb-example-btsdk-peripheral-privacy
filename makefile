@@ -51,7 +51,7 @@ TOOLCHAIN=GCC_ARM
 
 # Default build configuration. Options include:
 #
-# Debug   -- build with minimal optimizations, focus on debugging.
+# Debug -- build with minimal optimizations, focus on debugging.
 # Release -- build with full optimizations
 # Custom -- build with custom configuration, set the optimization flag in CFLAGS
 #
@@ -162,7 +162,7 @@ COMPONENTS +=bsp_design_modus
 # Relative path to the project directory (default is the Makefile's directory).
 #
 # This controls where automatic source code discovery looks for code.
-CY_APP_PATH=.
+CY_APP_PATH=
 
 # Relative path to the shared repo location.
 #
@@ -189,8 +189,7 @@ CY_WIN_HOME=$(subst \,/,$(USERPROFILE))
 CY_TOOLS_PATHS ?= $(wildcard \
     $(CY_WIN_HOME)/ModusToolbox/tools_* \
     $(HOME)/ModusToolbox/tools_* \
-    /Applications/ModusToolbox/tools_* \
-    $(CY_IDE_TOOLS_DIR))
+    /Applications/ModusToolbox/tools_*)
 
 # If you install ModusToolbox IDE in a custom location, add the path to its
 # "tools_X.Y" folder (where X and Y are the version number of the tools
@@ -202,7 +201,7 @@ CY_TOOLS_PATHS+=
 CY_TOOLS_DIR=$(lastword $(sort $(wildcard $(CY_TOOLS_PATHS))))
 
 ifeq ($(CY_TOOLS_DIR),)
-$(error Unable to find any of the available CY_TOOLS_PATHS -- $(CY_TOOLS_PATHS)). On Windows, use forward slashes.)
+$(error Unable to find any of the available CY_TOOLS_PATHS -- $(CY_TOOLS_PATHS). On Windows, use forward slashes.)
 endif
 
 $(info Tools Directory: $(CY_TOOLS_DIR))
